@@ -3,6 +3,7 @@ services:
     image: n8nio/n8n:1.77.2
     container_name: "${PROJECT_NAME}_n8n"
     restart: always
+    networks: ['demo']
     environment:
       # *** General ***
       - GENERIC_TIMEZONE=Europe/Madrid
@@ -10,10 +11,16 @@ services:
       - NODE_ENV=production
       # *** Settings ***
       - N8N_SECURE_COOKIE=false
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
     ports:
       - 5678:5678
     volumes:
       - ./example01-n8n-data:/home/node/.n8n
+      - /var/run/docker.sock:/var/run/docker.sock
 
 volumes:
   example01-n8n-data:
+
+networks:
+  demo:
+    driver: bridge

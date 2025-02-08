@@ -2,4 +2,4 @@
 .env
 
 # Docker volumens
-example01-n8n-data/
+./example01-n8n-data
