@@ -1,2 +1,5 @@
 # Ignore local vars
 .env
+
+# Docker volumens
+example01-n8n-data/
