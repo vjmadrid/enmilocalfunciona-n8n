@@ -57,17 +57,19 @@ build: ## [docker] Build containers
 	@echo "Building containers for $(PROJECT_NAME) ..."
 	$(DOCKER_COMPOSE_COMMAND) build
 
-up: ## [docker] Start up containers
+up: ## [docker] Start up all or c=<name> containers in background
 	@make check-env
 	@echo "Starting up containers for $(PROJECT_NAME) ..."
-	$(DOCKER_COMPOSE_COMMAND) pull
-	$(DOCKER_COMPOSE_COMMAND) up -d --remove-orphans
+	$(DOCKER_COMPOSE_COMMAND) pull $(c)
+	$(DOCKER_COMPOSE_COMMAND) up -d --remove-orphans $(c)
 
-down: ## [docker] Stop containers
-	@echo "Stoping up containers for $(PROJECT_NAME) ..."
-	$(DOCKER_COMPOSE_COMMAND) down
+down: ## [docker] Stop all or c=<name> containers
+	@echo "Stopping up containers for $(PROJECT_NAME) ..."
+	$(DOCKER_COMPOSE_COMMAND) down $(c)
 
-rebuild: down build ## [docker] Stops containers (via 'down') and rebuilds service images (via 'build')
+rebuild: ## [docker] Stops all or c=<name> containers (via 'down') and rebuilds service images (via 'build')
+	@make down
+	@make build
 
 clean: ## [docker] Removes containers, images and volumes
 	$(DOCKER_COMPOSE_COMMAND) down --volumes --rmi all
@@ -95,14 +97,22 @@ stop: ## [docker] Stop containers
 
 restart: stop start ## [docker] Stops containers (via 'stop'), and starts them again (via 'start')
 
-ps: ## [docker] List running containers
+status: ## [docker] List running containers
 	$(DOCKER_COMMAND) ps --filter name='$(PROJECT_NAME)*'
+
+ps: status ## [docker] Alias of status
 
 services: ## [docker] Lists services
 	$(DOCKER_COMPOSE_COMMAND) ps --services
 
-logs: ## [docker]  View containers logs
-	$(DOCKER_COMPOSE_COMMAND) logs -f $(filter-out $@,$(MAKECMDGOALS))
+logs: ## [docker] View all or c=<name> containers logs
+	$(DOCKER_COMPOSE_COMMAND) logs --tail=100 -f $(c)
+
+logs-to-file: ## [docker] View all or c=<name> containers logs
+	$(DOCKER_COMPOSE_COMMAND) logs --tail=100 -f $(c) > logs.txt
+
+# $(DOCKER_COMPOSE_COMMAND) logs -f $(filter-out $@,$(MAKECMDGOALS))
+
 
 shell: ## [docker] Brings up a shell in default (or specified) container [container]
 ifeq ($(container),)
