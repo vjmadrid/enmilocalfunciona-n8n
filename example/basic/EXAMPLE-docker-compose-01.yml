@@ -1,7 +1,11 @@
+# Use Case: Basic Installation
 services:
+  # Project URL: https://github.com/n8n-io/n8n
+  # Docs URL: https://docs.n8n.io/
   n8n:
-    image: n8nio/n8n:1.77.3
-    container_name: "${PROJECT_NAME}_n8n"
+    image: n8nio/n8n:1.80.3
+    container_name: "n8n"
+    #container_name: "${PROJECT_NAME}_n8n"
     restart: always
     networks: ['demo']
     environment:
@@ -12,21 +16,18 @@ services:
       # *** Settings ***
       - N8N_SECURE_COOKIE=false
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
-      # TEST
-      - N8N_HOST=${SUBDOMAIN}.${DOMAIN_NAME}
-      - N8N_PORT=5678
-      - N8N_PROTOCOL=http
-      - WEBHOOK_URL=https://${SUBDOMAIN}.${DOMAIN_NAME}/
     ports:
-      # - "127.0.0.1:${PORT}:${PORT}"
       - 5678:5678
     volumes:
+      # *** General configuration ***
+      - /var/run/docker.sock:/var/run/docker.sock:ro # Access to Docker on host machine
+      # *** Volume configuration ***
       - ./example01-n8n-data:/home/node/.n8n
-      - /var/run/docker.sock:/var/run/docker.sock
 
 volumes:
   example01-n8n-data:
 
 networks:
   demo:
+    name: demo
     driver: bridge
