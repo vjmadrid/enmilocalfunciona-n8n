@@ -46,7 +46,104 @@ Define que elementos son necesarios para instalar el software
 Configuración del fichero "docker-compose.yaml"
 
 ```bash
+# Use Case: Database Integration
+services:
 
+  # Project URL: https://github.com/postgres/postgres
+  # Docs URL: https://www.postgresql.org/docs/16/index.html
+  postgres:
+    image: postgres:16
+    container_name: "postgres"
+    restart: always
+    networks: ['demo']
+    environment:
+      # *** Settings ***
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - POSTGRES_NON_ROOT_USER
+      - POSTGRES_NON_ROOT_PASSWORD
+    ports:
+      - 5432:5432
+    volumes:
+      # *** Database Initializer ***
+      - ./init-data.sh:/docker-entrypoint-initdb.d/init-data.sh
+      # *** Volume configuration ***
+      - ./db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -h localhost -U ${POSTGRES_NON_ROOT_USER} -d ${POSTGRES_DB}']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+
+  # Project URL: https://github.com/pgadmin-org/pgadmin4
+  # Docs URL: https://www.pgadmin.org/docs/pgadmin4/8.14/index.html
+  pgadmin:
+    image: dpage/pgadmin4:9.0.0
+    #image: dpage/pgadmin4:8.14.0
+    container_name: "pgadmin"
+    restart: always
+    networks: ['demo']
+    environment:
+      # *** Settings ***
+      - PGADMIN_LISTEN_PORT=80
+      # *** Users ***
+      - PGADMIN_DEFAULT_EMAIL=admin@acme.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    depends_on:
+      - postgres
+    ports:
+      - 5050:80
+    volumes:
+      - ./pgadmin-data:/var/lib/pgadmin
+
+
+  # Project URL: https://github.com/n8n-io/n8n
+  # Docs URL: https://docs.n8n.io/
+  n8n:
+    image: n8nio/n8n:1.80.3
+    container_name: "n8n"
+    #container_name: "${PROJECT_NAME}_n8n"
+    restart: always
+    networks: ['demo']
+    environment:
+      # *** General ***
+      - GENERIC_TIMEZONE=Europe/Madrid
+      - TZ=Europe/Madrid
+      - NODE_ENV=production
+      # *** Settings ***
+      - N8N_SECURE_COOKIE=false
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+      # *** Database ***
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=postgres
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_DATABASE=${POSTGRES_DB}
+      - DB_POSTGRESDB_USER=${POSTGRES_NON_ROOT_USER}
+      - DB_POSTGRESDB_PASSWORD=${POSTGRES_NON_ROOT_PASSWORD}
+    ports:
+      - 5678:5678
+    links:
+      - postgres
+    volumes:
+      # *** General configuration ***
+      - /var/run/docker.sock:/var/run/docker.sock:ro # Access to Docker on host machine
+      # *** Volume configuration ***
+      - ./example01-n8n-data:/home/node/.n8n
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  db-data:
+  pgadmin-data:
+  example01-n8n-data:
+
+networks:
+  demo:
+    name: demo
+    driver: bridge
 ```
 
 Pasos a seguir
