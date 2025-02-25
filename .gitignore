@@ -1,11 +1,10 @@
 # Ignore local vars
 .env
-.DS_Store
+**/.DS_Store
 
 # Docker volumens
-./example/basic/example01-n8n-data
-./example/basic/example02-n8n-data
+**/example01-n8n-data
+**/example02-n8n-data
 
-./example/database/db-data
-./example/database/pgadmin-data
-./example/database/example01-n8n-data
+**/db-data
+**/pgadmin-data
