@@ -4,8 +4,7 @@ services:
   # Project URL: https://github.com/postgres/postgres
   # Docs URL: https://www.postgresql.org/docs/16/index.html
   postgres:
-    #image: postgres:16
-    image: postgres:17
+    image: postgres:16
     container_name: "postgres"
     restart: always
     networks: ['demo']

@@ -21,11 +21,6 @@
       - [Preparación para su uso](#preparación-para-su-uso)
   - [Configuración](#configuración)
     - [Configurar makefile para su uso en windows](#configurar-makefile-para-su-uso-en-windows)
-    - [Configuración PGAdmin](#configuración-pgadmin)
-      - [Detalle](#detalle)
-      - [Particularidades](#particularidades)
-      - [Persistencia](#persistencia)
-      - [Agregar un servidor Postgres](#agregar-un-servidor-postgres)
   - [Uso](#uso)
   - [Autor](#autor)
 
@@ -158,46 +153,6 @@ Estos son algunos de los aspectos de configuración general para los ejemplos qu
 2. Dentro del fichero Makefile cambiar las dos rutas /bin por /Scripts
 
 3. Usar una consola linux, como puede ser el gitBash para ejecutar el comando make
-
-
-### Configuración PGAdmin
-
-#### Detalle
-
-La configuración de la aplicación se encuentra disponible en la sección de las variables de entorno del contenedor.
-
-[Documentación](https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html)
-
-Estas varibles de entorno son las propias de la herramienta y estan referenciadas con otras variables de entorno ubicadas en el fichero ".env"
-
-Se identificarán por el prefijo "PGADMIN_"
-
-#### Particularidades
-
-Principalmente hará uso de: las credenciales de acceso
-
-#### Persistencia
-
-Monta un volumen local para almacenar los datos persistentes: **pgadmin-data**
-
-#### Agregar un servidor Postgres
-
-Pasos a seguir:
-
-* Verificar que el contenedor de Postgres se encuentra disponible
-* Verificar que el contenedor de PGAdmin se encuentra disponible
-* Acceder a la URL de la herramienta PGAdmin: http://localhost:5050
-* Iniciar sesión con las credenciales por defecto (email: admin@acme.com y password: admin)
-* Verificar que se ha cargado la home de la aplicación
-* Pulsar sobre el botón "Add New Server"
-* Verificar que se ha cargado la modal de creación
-* Establecer el "name": db
-* Acceder a la pestaña de "Connection"
-* Rellenar los siguientes campos
-  * Hostname (nombre del contenedor): db
-  * Username: keycloak
-  * Password: keycloak
-* Verificar que se puede acceder desde el menú de servidores
 
 
 
