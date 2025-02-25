@@ -1,5 +1,6 @@
 # Ignore local vars
 .env
+.DS_Store
 
 # Docker volumens
 ./example/basic/example01-n8n-data
