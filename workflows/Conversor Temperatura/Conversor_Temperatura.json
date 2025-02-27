@@ -1,0 +1,122 @@
+{
+  "name": "Conversor Temperatura",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "594a4ade-a8b8-48dd-9a0d-82b5d0c2e901",
+      "name": "When clicking ‘Test workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "29b47109-ffb0-4720-b91f-fab6577d29d0",
+              "name": "tempCelsius",
+              "value": 28,
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        200,
+        0
+      ],
+      "id": "c7d88d3f-6a22-4eeb-b18d-9428fbd8ce6a",
+      "name": "Temperatura Celsius"
+    },
+    {
+      "parameters": {
+        "jsCode": "// *** Entrada de Datos ***\n// Obtener la temperatura en Celsius del nodo anterior\nconst tempCelsius = $input.first().json.tempCelsius\n\n// *** Implementación ***\n// Convertir la temperatura de Celsius a Fahrenheit\nconst tempFahrenheit = (tempCelsius * 1.8) +32;\n\n// *** Salida de Datos ***\n\n// Crear una estructura de datos tipo JSON\nconst result = {\n  tempCelsius: tempCelsius,\n  tempFahrenheit: tempFahrenheit\n}\n\n// Generar resultado\nreturn {json: result}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        0
+      ],
+      "id": "886503b9-05cd-457b-a8bc-0ba10a55768f",
+      "name": "Conversor",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "601980e2-96ca-4d21-b9dc-228795449e82",
+              "name": "tempFahrenheit",
+              "value": "={{ $json.tempFahrenheit }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        620,
+        0
+      ],
+      "id": "a67e33bc-c41c-41ae-8fb3-624e26fde194",
+      "name": "Temperatura Fahrenheit"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Temperatura Celsius",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Temperatura Celsius": {
+      "main": [
+        [
+          {
+            "node": "Conversor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Conversor": {
+      "main": [
+        [
+          {
+            "node": "Temperatura Fahrenheit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "14c73de1-62be-4c19-8bdc-c03f353627c5",
+  "meta": {
+    "instanceId": "f5c0e8fa59049b78929ccc6159187bb540c3d152cac3ed11821d5f0257fa172c"
+  },
+  "id": "f8yVqGUOaF3rePP0",
+  "tags": []
+}
