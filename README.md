@@ -34,11 +34,17 @@ Este **repositorio** se encarga de servir como una **estructura** de los **recur
 
 * [Primeros pasos con n8n (Parte 1)](https://www.enmilocalfunciona.io/primeros-pasos-con-n8n/): Artículo de introducción a la herramienta n8n donde se explicarán más ciertos detalles técnicos de la herramienta y ciertos conceptos necesarios para explotar el máximo su uso
 
+PRÓXIMAS PUBLICACIONES
+
 * [Acelerando los desarrollos con contenedores : n8n](https://www.enmilocalfunciona.io/acelerando-los-desarrollos-con-contenedores-n8n/): Artículo de soporte que ayudará a desplegar la herramienta en local mediante Docker y que servirá de base para la realización de los siguientes artículos
 
 * [Ejemplo de n8n: Uso del nodo code](https://www.enmilocalfunciona.io/ejemplo-de-n8n-uso-del-nodo-code/): Artículo de soporte que se utilizará para implementar un ejemplo de workflow sin integraciones externas, para explicar el nodo code y para usarlo como base de ejemplo para otros tutoriales.
 
 * [Primeros pasos con n8n (Parte 2) : Uso de Base de Datos](https://www.enmilocalfunciona.io/primeros-pasos-con-n8n-parte-2-uso-de-base-de-datos/): Artículo de la herramienta n8n donde se explicarán las diferentes configuraciones de base de datos que se pueden tener y su integración
+
+* [Primeros pasos con n8n (Parte 3) : Importar/Exportar Flujos de Trabajo](https://www.enmilocalfunciona.io/primeros-pasos-con-n8n-parte-3-importar-exportar-flujo/): Artículo de la herramienta n8n donde se explicarán las diferentes maneras de importar y exportar workflows
+
+* [Primeros pasos con n8n (Parte 4) : Importar/Exportar Credenciales](https://www.enmilocalfunciona.io/primeros-pasos-con-n8n-parte-4-importar-exportar-credenciales/): Artículo de la herramienta n8n donde se explicarán las diferentes maneras de importar y exportar credenciales
 
 
 
