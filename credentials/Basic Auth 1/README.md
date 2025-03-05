@@ -1,0 +1,1 @@
+La clave de encriptación utilizada para esta credencial es: "SDi9RWzDZlQB3Gd+NnE5F0LL4ikmLpvV"
