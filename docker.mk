@@ -63,6 +63,12 @@ up: ## [docker] Start up all or c=<name> containers in background
 	$(DOCKER_COMPOSE_COMMAND) pull $(c)
 	$(DOCKER_COMPOSE_COMMAND) up -d --remove-orphans $(c)
 
+up-debug: ## [docker] Start up all or c=<name> containers in background
+	@make check-env
+	@echo "Starting up containers for $(PROJECT_NAME) ..."
+	$(DOCKER_COMPOSE_COMMAND) pull $(c)
+	$(DOCKER_COMPOSE_COMMAND) up --remove-orphans $(c)
+
 down: ## [docker] Stop all or c=<name> containers
 	@echo "Stopping up containers for $(PROJECT_NAME) ..."
 	$(DOCKER_COMPOSE_COMMAND) down $(c)

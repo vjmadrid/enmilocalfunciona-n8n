@@ -3,7 +3,7 @@ services:
   # Project URL: https://github.com/n8n-io/n8n
   # Docs URL: https://docs.n8n.io/
   n8n:
-    image: n8nio/n8n:1.80.5
+    image: n8nio/n8n:1.82.1
     container_name: "n8n"
     #container_name: "${PROJECT_NAME}n8n"
     restart: always
@@ -17,6 +17,10 @@ services:
       - N8N_SECURE_COOKIE=false
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
       - N8N_RUNNERS_ENABLED=true
+      # *** Auth ***
+      #- N8N_BASIC_AUTH=true
+      #- N8N_BASIC_AUTH_USERNAME=test1
+      #- N8N_BASIC_AUTH_PASSWORD=test1
     ports:
       - 5678:5678
     volumes:

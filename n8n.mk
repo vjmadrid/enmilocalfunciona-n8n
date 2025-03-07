@@ -86,9 +86,9 @@ n8n-credentials-backup: ## [n8n] Backup ALL Credentials
 	@echo "Creating a backup for credentials ..."
 	@echo "* Creating backup in the $(N8N_CREDENTIALS_DOCKER_BACKUP_LATEST_DIRECTORY) container directory ..."
 	@echo "* Creating dated backup in the $(N8N_CREDENTIALS_DOCKER_BACKUP_DATED_DIRECTORY) container directory ..."
-	$(DOCKER_COMMAND) exec -u node -t "$(N8N_ID_CONTAINER)" n8n export:workflow --backup --output=$(N8N_CREDENTIALS_DOCKER_BACKUP_LATEST_DIRECTORY)
+	$(DOCKER_COMMAND) exec -u node -t "$(N8N_ID_CONTAINER)" n8n export:credentials --backup --output=$(N8N_CREDENTIALS_DOCKER_BACKUP_LATEST_DIRECTORY)
 	$(DOCKER_COMMAND) exec -u node -t "$(N8N_ID_CONTAINER)" cp -r $(N8N_CREDENTIALS_DOCKER_BACKUP_LATEST_DIRECTORY) $(N8N_CREDENTIALS_DOCKER_BACKUP_DATED_DIRECTORY)
 
 n8n-credentials-restore-last-backup: ## [n8n] Restore ALL Credentials last backup
 	@echo "Restoring the last credentials backup of the $(N8N_CREDENTIALS_DOCKER_BACKUP_LATEST_DIRECTORY) container directory ..."
-	$(DOCKER_COMMAND) exec -u node -it $(N8N_ID_CONTAINER) n8n import:workflow --separate --input=$(N8N_CREDENTIALS_DOCKER_BACKUP_LATEST_DIRECTORY)
+	$(DOCKER_COMMAND) exec -u node -it $(N8N_ID_CONTAINER) n8n import:credentials --separate --input=$(N8N_CREDENTIALS_DOCKER_BACKUP_LATEST_DIRECTORY)
