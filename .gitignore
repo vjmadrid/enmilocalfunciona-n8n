@@ -7,6 +7,7 @@
 **/example02-n8n-data
 
 **/database01-n8n-data
+**/queue01-n8n-data
 
 **/db-data
 **/pgadmin-data
