@@ -11,6 +11,7 @@ services:
     env_file:
       - ./config/n8n/n8n.basic.env
       #- ./config/n8n/n8n.basicwithdoc.env
+      #- ./config/n8n/n8n.advance.env
     ports:
       - 5678:5678
     volumes:
