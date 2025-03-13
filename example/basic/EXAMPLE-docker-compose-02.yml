@@ -1,0 +1,29 @@
+# Use Case: Basic Installation with .env file
+services:
+  # Project URL: https://github.com/n8n-io/n8n
+  # Docs URL: https://docs.n8n.io/
+  n8n:
+    image: n8nio/n8n:1.82.1
+    container_name: "n8n"
+    #container_name: "${PROJECT_NAME}n8n"
+    restart: always
+    networks: ['demo']
+    env_file:
+      - ./config/n8n/n8n.basic.env
+      #- ./config/n8n/n8n.basicwithdoc.env
+    ports:
+      - 5678:5678
+    volumes:
+      # *** General configuration ***
+      - /var/run/docker.sock:/var/run/docker.sock:ro # Access to Docker on host machine
+      # *** Volume configuration ***
+      - ./example01-n8n-data/n8n:/home/node/.n8n
+      - ./example01-n8n-data/other:/home/node/
+
+volumes:
+  example01-n8n-data:
+
+networks:
+  demo:
+    name: demo
+    driver: bridge
