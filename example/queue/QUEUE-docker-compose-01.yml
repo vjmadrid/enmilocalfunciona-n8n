@@ -1,0 +1,61 @@
+# Use Case: Basic Queue Mode
+services:
+
+  # Project URL: https://github.com/redis/redis
+  # Docs URL: https://redis.io/docs/latest/
+  n8n-redis:
+    image: redis:7.4.2
+    container_name: "n8n-redis"
+    restart: always
+    networks: ['demo']
+    ports:
+      - 6379:6379
+
+  # Project URL: https://github.com/n8n-io/n8n
+  # Docs URL: https://docs.n8n.io/
+  n8n-main:
+    image: n8nio/n8n:1.82.1
+    container_name: "n8n-main"
+    #container_name: "${PROJECT_NAME}n8n-main"
+    restart: always
+    networks: ['demo']
+    environment:
+      # *** General ***
+      - GENERIC_TIMEZONE=Europe/Madrid
+      - TZ=Europe/Madrid
+      - NODE_ENV=production
+      # *** Settings ***
+      - N8N_SECURE_COOKIE=false
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+      - N8N_RUNNERS_ENABLED=true
+    ports:
+      - 5678:5678
+    volumes:
+      # *** General configuration ***
+      - /var/run/docker.sock:/var/run/docker.sock:ro # Access to Docker on host machine
+      # *** Volume configuration ***
+      - ./queue01-n8n-data/n8n:/home/node/.n8n
+      - ./queue01-n8n-data/other:/home/node/
+    depends_on:
+      - redis
+
+  n8n-worker:
+    image: n8nio/n8n:1.82.1
+    restart: always
+    networks: ['demo']
+    deploy:
+      replicas: 3
+    environment:
+      - EXECUTIONS_MODE=queue
+      - QUEUE_BULL_REDIS_HOST=redis
+      - QUEUE_BULL_REDIS_PORT=6379
+    depends_on:
+      - redis
+
+volumes:
+  queue01-n8n-data:
+
+networks:
+  demo:
+    name: demo
+    driver: bridge
