@@ -1,4 +1,4 @@
-# Use Case: Database Integration
+# Use Case: Database Integration with .env file
 services:
 
   # Project URL: https://github.com/postgres/postgres
@@ -59,21 +59,8 @@ services:
     #container_name: "${PROJECT_NAME}_n8n"
     restart: always
     networks: ['demo']
-    environment:
-      # *** General ***
-      - GENERIC_TIMEZONE=Europe/Madrid
-      - TZ=Europe/Madrid
-      - NODE_ENV=production
-      # *** Settings ***
-      - N8N_SECURE_COOKIE=false
-      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
-      # *** Database ***
-      - DB_TYPE=postgresdb
-      - DB_POSTGRESDB_HOST=postgres
-      - DB_POSTGRESDB_PORT=5432
-      - DB_POSTGRESDB_DATABASE=${POSTGRES_DB}
-      - DB_POSTGRESDB_USER=${POSTGRES_NON_ROOT_USER}
-      - DB_POSTGRESDB_PASSWORD=${POSTGRES_NON_ROOT_PASSWORD}
+    env_file:
+      - ./config/n8n/n8n.basic.env
     ports:
       - 5678:5678
     links:
