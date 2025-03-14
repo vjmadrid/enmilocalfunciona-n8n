@@ -13,7 +13,7 @@ Este proyecto representa una estructura de recursos utilizados para el uso de **
 
 * [Docker](https://www.docker.com/) - Tecnología de Contenedores/Containers
 * [Docker Hub](https://hub.docker.com/) - Repositorio de Docker Público
-* [Postgresql](https://www.postgresql.org/) - Base de Datos relacional (Version 17)
+* [Postgresql](https://www.postgresql.org/) - Base de Datos relacional (Version 16)
 * [n8n](https://n8n.io/) - Herramienta de automatización de procesos + Agentes IA
 
 
@@ -43,7 +43,7 @@ Define que elementos son necesarios para instalar el software
 
 ### Docker Compose
 
-Configuración del fichero "docker-compose.yaml"
+Configuración del fichero "DB-docker-compose-01.yml"
 
 ```bash
 # Use Case: Database Integration
@@ -58,11 +58,11 @@ services:
     networks: ['demo']
     environment:
       # *** Settings ***
-      - POSTGRES_USER
-      - POSTGRES_PASSWORD
-      - POSTGRES_DB
-      - POSTGRES_NON_ROOT_USER
-      - POSTGRES_NON_ROOT_PASSWORD
+      - POSTGRES_USER=${DB_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${DB_POSTGRES_PASSWORD}
+      - POSTGRES_DB=${DB_POSTGRES_DB}
+      - POSTGRES_NON_ROOT_USER=${DB_POSTGRES_NON_ROOT_USER}
+      - POSTGRES_NON_ROOT_PASSWORD=${DB_POSTGRES_NON_ROOT_PASSWORD}
     ports:
       - 5432:5432
     volumes:
@@ -71,7 +71,7 @@ services:
       # *** Volume configuration ***
       - ./db-data:/var/lib/postgresql/data
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -h localhost -U ${POSTGRES_NON_ROOT_USER} -d ${POSTGRES_DB}']
+      test: ['CMD-SHELL', 'pg_isready -h localhost -U ${DB_POSTGRES_NON_ROOT_USER} -d ${DB_POSTGRES_DB}']
       interval: 5s
       timeout: 5s
       retries: 10
@@ -96,15 +96,16 @@ services:
     ports:
       - 5050:80
     volumes:
+      # *** Volume configuration ***
       - ./pgadmin-data:/var/lib/pgadmin
 
 
   # Project URL: https://github.com/n8n-io/n8n
   # Docs URL: https://docs.n8n.io/
   n8n:
-    image: n8nio/n8n:1.80.3
+    image: n8nio/n8n:1.82.1
     container_name: "n8n"
-    #container_name: "${PROJECT_NAME}_n8n"
+    #container_name: "${PROJECT_NAME}n8n"
     restart: always
     networks: ['demo']
     environment:
@@ -119,9 +120,9 @@ services:
       - DB_TYPE=postgresdb
       - DB_POSTGRESDB_HOST=postgres
       - DB_POSTGRESDB_PORT=5432
-      - DB_POSTGRESDB_DATABASE=${POSTGRES_DB}
-      - DB_POSTGRESDB_USER=${POSTGRES_NON_ROOT_USER}
-      - DB_POSTGRESDB_PASSWORD=${POSTGRES_NON_ROOT_PASSWORD}
+      - DB_POSTGRESDB_DATABASE=${DB_POSTGRES_DB}
+      - DB_POSTGRESDB_USER=${DB_POSTGRES_NON_ROOT_USER}
+      - DB_POSTGRESDB_PASSWORD=${DB_POSTGRES_NON_ROOT_PASSWORD}
     ports:
       - 5678:5678
     links:
@@ -130,7 +131,8 @@ services:
       # *** General configuration ***
       - /var/run/docker.sock:/var/run/docker.sock:ro # Access to Docker on host machine
       # *** Volume configuration ***
-      - ./example01-n8n-data:/home/node/.n8n
+      - ./database01-n8n-data/n8n:/home/node/.n8n
+      - ./database01-n8n-data/other:/home/node/
     depends_on:
       postgres:
         condition: service_healthy
@@ -138,7 +140,7 @@ services:
 volumes:
   db-data:
   pgadmin-data:
-  example01-n8n-data:
+  database01-n8n-data:
 
 networks:
   demo:
@@ -150,25 +152,25 @@ Pasos a seguir
 
 1. Localizar el directorio principal del proyecto : <PROJECT_PATH>
 
-2. Localiza la ruta : **/example/basic/**
+2. Localiza la ruta : **/example/database/**
 
 3. Ejecutar el siguiente comando
 
 ```bash
-docker-compose -f EXAMPLE-docker-compose-01.yml up --build
+docker-compose -f DB-docker-compose-01.yml up --build
 
 ó
 
-docker-compose -f EXAMPLE-docker-compose-01.yml up --build -d
+docker-compose -f DB-docker-compose-01.yml up --build -d
 ```
 
 Tambien se puede ejecutar poniendo la ruta completa del fichero de Docker Compose
 
-4. Comprobar que la imagen ha sido creada
+4. Comprobar que las imagenes ha sido creadas
 
-Verificar que parece como imagen Docker el nombre "n8n"
+Verificar que parece como imagen Docker: "n8n", "postgres" y "pgadmin"
 
-5. Comprobar que la aplicación ha sido desplegada correctamente
+5. Comprobar que la aplicación "n8n" ha sido desplegada correctamente
 
 Verificar mediante el acceso a la aplicación mediante la URL : http://localhost:5678
 
@@ -186,7 +188,7 @@ Pasos a seguir
 ```bash
 ### --- DOCKER ---
 ...
-DOCKER_COMPOSE_FILE_USED=./example/EXAMPLE-docker-compose-01.yml
+DOCKER_COMPOSE_FILE_USED=./example/DB-docker-compose-01.yml.yml
 ...
 ```
 
@@ -260,7 +262,7 @@ Pasos a seguir:
 * Verificar que se ha cargado la home de la aplicación
 * Pulsar sobre el botón "Add New Server"
 * Verificar que se ha cargado la modal de creación
-* Establecer el "name": n8ndb
+* Establecer el "name": postgres
 * Acceder a la pestaña de "Connection"
 * Rellenar los siguientes campos
   * Hostname (nombre del contenedor): n8ndb

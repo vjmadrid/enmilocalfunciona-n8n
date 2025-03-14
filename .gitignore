@@ -9,6 +9,8 @@
 **/database01-n8n-data
 **/queue01-n8n-data
 
+**/n8n-data
+**/postgres-data
 **/db-data
 **/pgadmin-data
 
