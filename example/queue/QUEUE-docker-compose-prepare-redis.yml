@@ -1,0 +1,42 @@
+# Use Case: Prepare Redis
+services:
+
+  # Project URL: https://github.com/redis/redis
+  # Docs URL: https://redis.io/docs/latest/
+  redis:
+    #image: redis:7.2.7-alpine
+    image: redis:7.4.2
+    container_name: "redis"
+    restart: always
+    networks: ['demo']
+    ports:
+      - 6379:6379
+    volumes:
+      # *** Volume configuration ***
+      - ./redis-data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Project URL: https://github.com/RedisInsight/RedisInsight
+  # Docs URL: https://redis.io/docs/latest/develop/tools/insight/
+  redis-insight:
+    image: redis/redisinsight:2.66.0
+    container_name: "redis-insight"
+    restart: always
+    networks: ['demo']
+    ports:
+    - 5540:5540
+  volumes:
+      - ./redis-insight-data:/data
+
+volumes:
+  redis-data:
+  redis-insight-data:
+
+networks:
+  demo:
+    name: demo
+    driver: bridge

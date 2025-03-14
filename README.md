@@ -46,6 +46,8 @@ PRÓXIMAS PUBLICACIONES
 
 * [Primeros pasos con n8n (Parte 4) : Importar/Exportar Credenciales](https://www.enmilocalfunciona.io/primeros-pasos-con-n8n-parte-4-importar-exportar-credenciales/): Artículo de la herramienta n8n donde se explicarán las diferentes maneras de importar y exportar credenciales
 
+* [Acelerando los desarrollos con contenedores : n8n + importación](https://www.enmilocalfunciona.io/acelerando-los-desarrollos-con-contenedores-n8n-importacion/): Artículo de soporte que ayudará a desplegar la herramienta en local mediante Docker con importación de workflows y/o credenciales automáticamente en el arranque.
+
 
 
 

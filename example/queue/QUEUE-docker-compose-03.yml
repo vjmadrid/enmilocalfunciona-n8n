@@ -1,4 +1,15 @@
 # Use Case: Basic Queue Mode
+
+# *** N8N shared ***
+# Project URL: https://github.com/n8n-io/n8n
+# Docs URL: https://docs.n8n.io/
+x-shared: &shared
+  image: n8nio/n8n:1.82.1
+  restart: always
+  networks: ['demo']
+  env_file:
+      - ./config/n8n/n8n.env
+
 services:
 
   # Project URL: https://github.com/postgres/postgres
@@ -8,13 +19,9 @@ services:
     container_name: "n8n-postgres"
     restart: always
     networks: ['demo']
-    environment:
-      # *** Settings ***
-      - POSTGRES_USER=${DB_POSTGRES_USER}
-      - POSTGRES_PASSWORD=${DB_POSTGRES_PASSWORD}
-      - POSTGRES_DB=${DB_POSTGRES_DB}
-      - POSTGRES_NON_ROOT_USER=${DB_POSTGRES_NON_ROOT_USER}
-      - POSTGRES_NON_ROOT_PASSWORD=${DB_POSTGRES_NON_ROOT_PASSWORD}
+    env_file:
+      - ./config/postgres/postgres.env
+    #environment:
       # *** Tunnings  ***
       # High performance and scalability
       # IMPORTANT: Depends on the host machine
@@ -60,38 +67,10 @@ services:
   # Project URL: https://github.com/n8n-io/n8n
   # Docs URL: https://docs.n8n.io/
   n8n-main:
-    image: n8nio/n8n:1.82.1
-    container_name: "n8n-main"
-    #container_name: "${PROJECT_NAME}n8n-main"
-    restart: always
+    <<: *shared
     networks: ['demo']
-    environment:
-      # *** General ***
-      - GENERIC_TIMEZONE=Europe/Madrid
-      - TZ=Europe/Madrid
-      - NODE_ENV=production
-      # *** Settings ***
-      - N8N_SECURE_COOKIE=false
-      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
-      - N8N_RUNNERS_ENABLED=true
-      - N8N_ENCRYPTION_KEY=${ENCRYPTION_KEY}
-      # *** Database ***
-      - DB_TYPE=postgresdb
-      - DB_POSTGRESDB_HOST=n8n-postgres
-      - DB_POSTGRESDB_PORT=5432
-      - DB_POSTGRESDB_DATABASE=${DB_POSTGRES_DB}
-      - DB_POSTGRESDB_USER=${DB_POSTGRES_NON_ROOT_USER}
-      - DB_POSTGRESDB_PASSWORD=${DB_POSTGRES_NON_ROOT_PASSWORD}
-      # *** Queue Mode ***
-      - EXECUTIONS_MODE=queue
-      - EXECUTIONS_QUEUE=redis
-      - QUEUE_BULL_REDIS_HOST=n8n-redis
-      - QUEUE_BULL_REDIS_PORT=6379
-      - QUEUE_HEALTH_CHECK_ACTIVE=true
     ports:
       - 5678:5678
-    links:
-      - n8n-postgres
     volumes:
       # *** General configuration ***
       - /var/run/docker.sock:/var/run/docker.sock:ro # Access to Docker on host machine
@@ -103,36 +82,12 @@ services:
       - n8n-redis
 
   n8n-worker:
-    image: n8nio/n8n:1.82.1
+    <<: *shared
     deploy:
       replicas: 3
     restart: always
     networks: ['demo']
     command: ["worker"]
-    environment:
-      # *** General ***
-      - GENERIC_TIMEZONE=Europe/Madrid
-      - TZ=Europe/Madrid
-      - NODE_ENV=production
-      # *** Settings ***
-      - N8N_SECURE_COOKIE=false
-      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
-      - N8N_RUNNERS_ENABLED=true
-      - N8N_ENCRYPTION_KEY=${ENCRYPTION_KEY}
-      # *** Database ***
-      - DB_TYPE=postgresdb
-      - DB_POSTGRESDB_HOST=n8n-postgres
-      - DB_POSTGRESDB_PORT=5432
-      - DB_POSTGRESDB_DATABASE=${DB_POSTGRES_DB}
-      - DB_POSTGRESDB_USER=${DB_POSTGRES_NON_ROOT_USER}
-      - DB_POSTGRESDB_PASSWORD=${DB_POSTGRES_NON_ROOT_PASSWORD}
-      # *** Queue Mode ***
-      - EXECUTIONS_MODE=queue
-      - EXECUTIONS_QUEUE=redis
-      - QUEUE_BULL_REDIS_HOST=n8n-redis
-      - QUEUE_BULL_REDIS_PORT=6379
-      - QUEUE_HEALTH_CHECK_ACTIVE=true
-      - OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS=true
     depends_on:
       - n8n-main
 

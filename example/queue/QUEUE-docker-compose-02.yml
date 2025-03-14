@@ -1,68 +1,32 @@
 # Use Case: Basic Queue Mode
-
-# *** N8N shared ***
-# Project URL: https://github.com/n8n-io/n8n
-# Docs URL: https://docs.n8n.io/
-x-shared: &shared
-  image: n8nio/n8n:1.77.2
-  restart: always
-  networks: ['demo']
-  environment:
-    # *** General ***
-    - GENERIC_TIMEZONE=Europe/Madrid
-    - TZ=Europe/Madrid
-    - NODE_ENV=production
-    # *** Settings ***
-    - N8N_SECURE_COOKIE=false
-    - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
-    - N8N_RUNNERS_ENABLED=true
-    # *** Database ***
-    - DB_TYPE=postgresdb
-    - DB_POSTGRESDB_HOST=postgres
-    - DB_POSTGRESDB_PORT=5432
-    - DB_POSTGRESDB_DATABASE=${DB_POSTGRES_DB}
-    - DB_POSTGRESDB_USER=${DB_POSTGRES_NON_ROOT_USER}
-    - DB_POSTGRESDB_PASSWORD=${DB_POSTGRES_NON_ROOT_PASSWORD}
-    # *** Queue Mode ***
-    - EXECUTIONS_MODE=queue
-    - QUEUE_BULL_REDIS_HOST=n8n-redis
-    - QUEUE_BULL_REDIS_PORT=6379
-  links:
-    - postgres
-    - redis
-  volumes:
-    # *** Volume configuration ***
-    - ./queue01-n8n-data/n8n:/home/node/.n8n
-    - ./queue01-n8n-data/other:/home/node/
-  depends_on:
-    postgres:
-      condition: service_healthy
-    redis:
-      condition: service_healthy
-
 services:
 
   # Project URL: https://github.com/postgres/postgres
   # Docs URL: https://www.postgresql.org/docs/16/index.html
-  postgres:
+  n8n-postgres:
     image: postgres:16
-    container_name: "postgres"
+    container_name: "n8n-postgres"
     restart: always
     networks: ['demo']
-    environment:
-      # *** Settings ***
-      - POSTGRES_USER=${DB_POSTGRES_USER}
-      - POSTGRES_PASSWORD=${DB_POSTGRES_PASSWORD}
-      - POSTGRES_DB=${DB_POSTGRES_DB}
-      - POSTGRES_NON_ROOT_USER=${DB_POSTGRES_NON_ROOT_USER}
-      - POSTGRES_NON_ROOT_PASSWORD=${DB_POSTGRES_NON_ROOT_PASSWORD}
+    env_file:
+      - ./config/postgres/postgres.env
+    #environment:
+      # *** Tunnings  ***
+      # High performance and scalability
+      # IMPORTANT: Depends on the host machine
+      #- POSTGRES_WORK_MEM=64MB
+      #- POSTGRES_SHARED_BUFFERS=2GB
+      #- POSTGRES_MAINTENANCE_WORK_MEM=1GB
+      #- POSTGRES_EFFECTIVE_CACHE_SIZE=2GB
+      #- POSTGRES_MAX_PARALLEL_WORKERS=10
+      #- POSTGRES_MAX_PARALLEL_WORKERS_PER_GATHER=5
     ports:
       - 5432:5432
     volumes:
       # *** Database Initializer ***
       - ./init-data.sh:/docker-entrypoint-initdb.d/init-data.sh
       # *** Volume configuration ***
-      - ./db-data:/var/lib/postgresql/data
+      - ./postgres-data:/var/lib/postgresql/data
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -h localhost -U ${DB_POSTGRES_NON_ROOT_USER} -d ${DB_POSTGRES_DB}']
       interval: 5s
@@ -71,37 +35,64 @@ services:
 
   # Project URL: https://github.com/redis/redis
   # Docs URL: https://redis.io/docs/latest/
-  redis:
-    image: redis:7.2.7-alpine
+  n8n-redis:
+    #image: redis:7.2.7-alpine
+    image: redis:7.4.2
+    container_name: "n8n-redis"
     restart: always
     networks: ['demo']
-    volumes:
-      - ./redis-data:/data
     ports:
       - 6379:6379
+    volumes:
+      # *** Volume configuration ***
+      - ./redis-data:/data
     healthcheck:
       test: ['CMD', 'redis-cli', 'ping']
       interval: 5s
       timeout: 5s
       retries: 10
 
+
+  # Project URL: https://github.com/n8n-io/n8n
+  # Docs URL: https://docs.n8n.io/
   n8n-main:
-    <<: *shared
+    image: n8nio/n8n:1.82.1
+    container_name: "n8n-main"
+    #container_name: "${PROJECT_NAME}n8n-main"
+    restart: always
     networks: ['demo']
+    env_file:
+      - ./config/n8n/n8n.env
     ports:
       - 5678:5678
+    links:
+      - n8n-postgres
+    volumes:
+      # *** General configuration ***
+      - /var/run/docker.sock:/var/run/docker.sock:ro # Access to Docker on host machine
+      # *** Volume configuration ***
+      - ./queue01-n8n-data/n8n:/home/node/.n8n
+      - ./queue01-n8n-data/other:/home/node/
+    depends_on:
+      - n8n-postgres
+      - n8n-redis
 
   n8n-worker:
-    <<: *shared
+    image: n8nio/n8n:1.82.1
+    deploy:
+      replicas: 3
+    restart: always
     networks: ['demo']
-    command: worker
+    command: ["worker"]
+    env_file:
+      - ./config/n8n/n8n.env
     depends_on:
       - n8n-main
 
 volumes:
-  db-data:
-  n8n-data:
+  postgres-data:
   redis-data:
+  queue01-n8n-data:
 
 networks:
   demo:

@@ -116,6 +116,7 @@ services:
       # *** Settings ***
       - N8N_SECURE_COOKIE=false
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+      - N8N_RUNNERS_ENABLED=true
       # *** Database ***
       - DB_TYPE=postgresdb
       - DB_POSTGRESDB_HOST=postgres
