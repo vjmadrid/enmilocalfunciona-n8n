@@ -3,7 +3,7 @@
 # *** N8N shared ***
 # Project URL: https://github.com/n8n-io/n8n
 # Docs URL: https://docs.n8n.io/
-x-shared: &shared
+x-n8n: &service-n8n
   image: n8nio/n8n:1.82.1
   restart: always
   networks: ['demo']
@@ -67,8 +67,7 @@ services:
   # Project URL: https://github.com/n8n-io/n8n
   # Docs URL: https://docs.n8n.io/
   n8n-main:
-    <<: *shared
-    networks: ['demo']
+    <<: *service-n8n
     ports:
       - 5678:5678
     volumes:
@@ -82,11 +81,9 @@ services:
       - n8n-redis
 
   n8n-worker:
-    <<: *shared
+    <<: *service-n8n
     deploy:
       replicas: 3
-    restart: always
-    networks: ['demo']
     command: ["worker"]
     depends_on:
       - n8n-main

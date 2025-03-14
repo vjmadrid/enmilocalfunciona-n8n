@@ -1,7 +1,11 @@
-# Use Case: Basic Installation
+# Use Case: Basic Installation + automatic import
 
+# *** N8N shared ***
+# Project URL: https://github.com/n8n-io/n8n
+# Docs URL: https://docs.n8n.io/
 x-n8n: &service-n8n
   image: n8nio/n8n:1.82.1
+  restart: always
   networks: ['demo']
   environment:
       # *** General ***
@@ -12,17 +16,18 @@ x-n8n: &service-n8n
       - N8N_SECURE_COOKIE=false
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
       - N8N_RUNNERS_ENABLED=true
+      - N8N_ENCRYPTION_KEY=${ENCRYPTION_KEY}
 
 services:
 
   n8n-import:
     <<: *service-n8n
-    container_name: n8n-import
+    container_name: "n8n-import"
     #container_name: "${PROJECT_NAME}n8n-import"
     entrypoint: /bin/sh
     command:
       - "-c"
-      - "n8n import:credentials --separate --input=/backup/credentials && n8n import:workflow --separate --input=/backup/workflows"
+      - "n8n import:workflow --input=/backup/workflows"
     volumes:
       - ./backup:/backup
 
@@ -41,6 +46,7 @@ services:
       # *** Volume configuration ***
       - ./example01-n8n-data/n8n:/home/node/.n8n
       - ./example01-n8n-data/other:/home/node/
+      - ./example01-n8n-data/backup:/backup
     depends_on:
       n8n-import:
         condition: service_completed_successfully
