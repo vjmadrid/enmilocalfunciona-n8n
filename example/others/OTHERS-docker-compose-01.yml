@@ -35,8 +35,28 @@ services:
     build:
       context: ./api-shop
       dockerfile: Dockerfile
+    container_name: "api-shop"
+    #container_name: "${PROJECT_NAME}api-shop"
+    restart: always
+    networks: ['demo']
     ports:
       - 5000:80
+
+  mysql:
+    image: mysql:9.2.0
+    container_name: "mysql"
+    #container_name: "${PROJECT_NAME}mysql"
+    restart: always
+    networks: ['demo']
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=shopdb
+      - MYSQL_USER=test1
+      - MYSQL_PASSWORD=test1
+    ports:
+      - 3306:3306
+    volumes:
+      - ./config/mysql:/docker-entrypoint-initdb.d
 
 volumes:
   other01-n8n-data:
