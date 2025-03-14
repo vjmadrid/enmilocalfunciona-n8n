@@ -1,5 +1,23 @@
-# Use an official Python runtime as a parent image
+# Pull official base image
 FROM python:3.11
+
+# Set environment variables
+ARG ENV=local
+
+ENV ENV=${ENV} \
+    # python
+    PYTHONFAULTHANDLER=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONHASHSEED=random \
+    # pip
+    PIP_NO_CACHE_DIR=off \
+    PIP_DISABLE_PIP_VERSION_CHECK=on \
+    PIP_DEFAULT_TIMEOUT=120 \
+    # app
+    APP_HOME=/app \
+    PYTHONPATH="src" \
+    SERVER_HOST="0.0.0.0"
 
 # Set the working directory in the container
 WORKDIR /app
@@ -7,14 +25,15 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 COPY . /app
 
+# Install system dependencies
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends netcat
+
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Make port 80 available to the world outside this container
 EXPOSE 80
-
-# Define environment variable
-ENV NAME World
 
 # Run app.py when the container launches
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
