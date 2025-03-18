@@ -1,4 +1,4 @@
-# Use Case: Basic Queue Mode
+# Use Case: Basic Queue Mode with .env files
 services:
 
   # Project URL: https://github.com/postgres/postgres
