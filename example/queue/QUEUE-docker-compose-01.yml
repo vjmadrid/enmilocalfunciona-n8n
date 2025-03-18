@@ -88,6 +88,12 @@ services:
       - QUEUE_BULL_REDIS_HOST=n8n-redis
       - QUEUE_BULL_REDIS_PORT=6379
       - QUEUE_HEALTH_CHECK_ACTIVE=true
+      # *** Executions ***
+      - EXECUTIONS_DATA_PRUNE=true
+      - EXECUTIONS_DATA_MAX_AGE=336
+      - EXECUTIONS_DATA_PRUNE_MAX_COUNT=10000
+      - N8N_CONCURRENCY_PRODUCTION_LIMIT=10
+      - N8N_WORKER_CONCURRENCY=10
     ports:
       - 5678:5678
     links:
@@ -104,8 +110,6 @@ services:
 
   n8n-worker:
     image: n8nio/n8n:1.82.1
-    deploy:
-      replicas: 3
     restart: always
     networks: ['demo']
     command: ["worker"]
@@ -133,8 +137,16 @@ services:
       - QUEUE_BULL_REDIS_PORT=6379
       - QUEUE_HEALTH_CHECK_ACTIVE=true
       - OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS=true
+      # *** Executions ***
+      - EXECUTIONS_DATA_PRUNE=true
+      - EXECUTIONS_DATA_MAX_AGE=336
+      - EXECUTIONS_DATA_PRUNE_MAX_COUNT=10000
+      - N8N_CONCURRENCY_PRODUCTION_LIMIT=10
+      - N8N_WORKER_CONCURRENCY=10
     depends_on:
       - n8n-main
+    deploy:
+      replicas: 3
 
 volumes:
   postgres-data:

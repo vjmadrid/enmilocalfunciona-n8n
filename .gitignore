@@ -15,5 +15,7 @@
 **/mysql-data
 **/db-data
 **/pgadmin-data
+**/redis-data
+**/redis-insight-data
 
 **/rag

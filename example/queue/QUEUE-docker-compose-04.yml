@@ -43,6 +43,14 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
 
   # Project URL: https://github.com/redis/redis
   # Docs URL: https://redis.io/docs/latest/
@@ -62,6 +70,14 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.2'
+          memory: 256M
 
 
   # Project URL: https://github.com/n8n-io/n8n
@@ -79,6 +95,14 @@ services:
     depends_on:
       - n8n-postgres
       - n8n-redis
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 3G
+        reservations:
+          cpus: '1'
+          memory: 2G
 
   n8n-worker:
     <<: *service-n8n
@@ -87,6 +111,13 @@ services:
       - n8n-main
     deploy:
       replicas: 3
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1.5G
+        reservations:
+          cpus: '0.5'
+          memory: 1G
 
 volumes:
   postgres-data:

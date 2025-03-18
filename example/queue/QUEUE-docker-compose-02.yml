@@ -79,8 +79,6 @@ services:
 
   n8n-worker:
     image: n8nio/n8n:1.82.1
-    deploy:
-      replicas: 3
     restart: always
     networks: ['demo']
     command: ["worker"]
@@ -88,6 +86,8 @@ services:
       - ./config/n8n/n8n.env
     depends_on:
       - n8n-main
+    deploy:
+      replicas: 3
 
 volumes:
   postgres-data:

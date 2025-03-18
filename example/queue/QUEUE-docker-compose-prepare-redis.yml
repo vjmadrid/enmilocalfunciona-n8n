@@ -13,7 +13,7 @@ services:
       - 6379:6379
     volumes:
       # *** Volume configuration ***
-      - ./redis-data:/data
+      - ./example-redis-data:/data
     healthcheck:
       test: ['CMD', 'redis-cli', 'ping']
       interval: 5s
@@ -28,12 +28,12 @@ services:
     restart: always
     networks: ['demo']
     ports:
-    - 5540:5540
-  volumes:
+      - 5540:5540
+    volumes:
       - ./redis-insight-data:/data
 
 volumes:
-  redis-data:
+  example-redis-data:
   redis-insight-data:
 
 networks:
