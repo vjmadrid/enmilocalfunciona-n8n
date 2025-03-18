@@ -16,7 +16,7 @@ x-n8n: &service-n8n
       - N8N_SECURE_COOKIE=false
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
       - N8N_RUNNERS_ENABLED=true
-      - N8N_ENCRYPTION_KEY=${ENCRYPTION_KEY}
+      - N8N_ENCRYPTION_KEY=SDi9RWzDZlQB3Gd+NnE5F0LL4ikmLpvV
 
 services:
 
@@ -27,9 +27,9 @@ services:
     entrypoint: /bin/sh
     command:
       - "-c"
-      - "n8n import:workflow --input=/backup/workflows"
+      - "n8n import:workflow --separate --input=./backup/workflows/"
     volumes:
-      - ./backup:/backup
+      - ./backup:/home/node/backup
 
   # Project URL: https://github.com/n8n-io/n8n
   # Docs URL: https://docs.n8n.io/

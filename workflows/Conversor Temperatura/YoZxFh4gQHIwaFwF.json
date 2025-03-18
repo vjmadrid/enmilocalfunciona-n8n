@@ -1,5 +1,9 @@
 {
+  "createdAt": "2025-03-01T15:54:11.625Z",
+  "updatedAt": "2025-03-01T15:54:11.625Z",
+  "id": "YoZxFh4gQHIwaFwF",
   "name": "Conversor Temperatura",
+  "active": false,
   "nodes": [
     {
       "parameters": {},
@@ -72,7 +76,6 @@
       "name": "Edit Fields"
     }
   ],
-  "pinData": {},
   "connections": {
     "When clicking ‘Test workflow’": {
       "main": [
@@ -108,14 +111,13 @@
       ]
     }
   },
-  "active": false,
   "settings": {
     "executionOrder": "v1"
   },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
   "versionId": "f5e8bab0-3896-462a-950d-6a312f6cd305",
-  "meta": {
-    "instanceId": "f5c0e8fa59049b78929ccc6159187bb540c3d152cac3ed11821d5f0257fa172c"
-  },
-  "id": "YoZxFh4gQHIwaFwF",
+  "triggerCount": 0,
   "tags": []
 }
