@@ -26,11 +26,10 @@ services:
     entrypoint: /bin/sh
     command:
       - "-c"
-      - "n8n import:workflow --separate --input=/backup/workflows/"
+      - "n8n import:workflow --separate --input=/backup/workflows/ && n8n import:credentials --separate --input=/backup/credentials"
     volumes:
       # *** Volume configuration ***
-      - ./example02-n8n-data/n8n:/home/node/.n8n
-      - ./example02-n8n-data/other:/home/node/
+      - ./example03-n8n-data/n8n:/home/node/.n8n
       - ./backup:/backup
 
   # Project URL: https://github.com/n8n-io/n8n
@@ -46,15 +45,14 @@ services:
       # *** General configuration ***
       - /var/run/docker.sock:/var/run/docker.sock:ro # Access to Docker on host machine
       # *** Volume configuration ***
-      - ./example02-n8n-data/n8n:/home/node/.n8n
-      - ./example02-n8n-data/other:/home/node/
-      - ./backup:/backup
+      - ./example03-n8n-data/n8n:/home/node/.n8n
+      - ./example03-n8n-data/other:/home/node/
     depends_on:
       n8n-import:
         condition: service_completed_successfully
 
 volumes:
-  example02-n8n-data:
+  example03-n8n-data:
 
 networks:
   demo:
