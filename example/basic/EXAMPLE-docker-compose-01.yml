@@ -17,6 +17,7 @@ services:
       - N8N_SECURE_COOKIE=false
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
       - N8N_RUNNERS_ENABLED=true
+      #- N8N_ENCRYPTION_KEY=SDi9RWzDZlQB3Gd+NnE5F0LL4ikmLpvV
       # *** Auth ***
       #- N8N_BASIC_AUTH=true
       #- N8N_BASIC_AUTH_USERNAME=test1

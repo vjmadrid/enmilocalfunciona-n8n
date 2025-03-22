@@ -19,6 +19,20 @@ x-n8n: &service-n8n
 
 services:
 
+  n8n-import:
+    <<: *service-n8n
+    container_name: "n8n-import"
+    #container_name: "${PROJECT_NAME}n8n-import"
+    entrypoint: /bin/sh
+    command:
+      - "-c"
+      - "n8n import:workflow --separate --input=/backup/workflows/"
+    volumes:
+      # *** Volume configuration ***
+      - ./example02-n8n-data/n8n:/home/node/.n8n
+      - ./example02-n8n-data/other:/home/node/
+      - ./backup:/backup
+
   # Project URL: https://github.com/n8n-io/n8n
   # Docs URL: https://docs.n8n.io/
   n8n:
@@ -35,6 +49,9 @@ services:
       - ./example02-n8n-data/n8n:/home/node/.n8n
       - ./example02-n8n-data/other:/home/node/
       - ./backup:/backup
+    depends_on:
+      n8n-import:
+        condition: service_completed_successfully
 
 volumes:
   example02-n8n-data:
