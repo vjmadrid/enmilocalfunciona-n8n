@@ -50,7 +50,7 @@ PRÓXIMAS PUBLICACIONES
 
 * [Primeros pasos con n8n (Parte 5) : Modo Queue](https://www.enmilocalfunciona.io/primeros-pasos-con-n8n-parte-5-modo-queue/): Artículo de la herramienta n8n donde se explicarán las diferentes configuraciones necesarias para disponer de un n8n funcionando en modo distribuido y escalable.
 
-* [Primeros pasos con n8n (Parte 6) : Migración Modo Regular a Modo Queue](https://www.enmilocalfunciona.io/primeros-pasos-con-n8n-parte-6-migracion-modo-regular-a-modo-queue/): Artículo de la herramienta n8n donde se explicarán las diferentes formas de hacer una migración del modo regular al modo queue
+* [Primeros pasos con n8n (Parte 6) : Migración Modo Normal a Modo Queue](https://www.enmilocalfunciona.io/primeros-pasos-con-n8n-parte-6-migracion-modo-normal-a-modo-queue/): Artículo de la herramienta n8n donde se explicarán las diferentes formas de hacer una migración del modo regular al modo queue
 
 * [Acelerando los desarrollos con contenedores : n8n + integración](https://www.enmilocalfunciona.io/acelerando-los-desarrollos-con-contenedores-n8n-integracion/): Artículo de soporte que ayudará a desplegar la herramienta n8n en local mediante Docker con otras herramientas desplegadas también en Docker
 

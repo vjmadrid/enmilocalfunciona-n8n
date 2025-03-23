@@ -1,12 +1,14 @@
 #!/bin/bash
 
-# Configuration
+# *** Configuration ***
 N8N_CONTAINER_NAME="n8n"
 N8N_CONTAINER_CREDENTIALS_DIR="/home/node/credentials/"
 N8N_CONTAINER_WORKFLOWS_DIR="/home/node/workflows/"
 
 ONE_CREDENTIAL_FILE="./backup/credentials/JAygfZ4uVgpOPrhU.json"
 ONE_WORKFLOW_FILE="./backup/workflows/YoZxFh4gQHIwaFwF.json"
+
+# *** Execution ***
 
 # Create work directories in the container
 echo "Creating directories of credentials and workflows in the container ..."
