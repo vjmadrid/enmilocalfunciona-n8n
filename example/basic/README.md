@@ -50,9 +50,9 @@ services:
   # Project URL: https://github.com/n8n-io/n8n
   # Docs URL: https://docs.n8n.io/
   n8n:
-    image: n8nio/n8n:1.80.3
+    image: n8nio/n8n:1.82.1
     container_name: "n8n"
-    #container_name: "${PROJECT_NAME}_n8n"
+    #container_name: "${PROJECT_NAME}n8n"
     restart: always
     networks: ['demo']
     environment:
@@ -63,13 +63,26 @@ services:
       # *** Settings ***
       - N8N_SECURE_COOKIE=false
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+      - N8N_RUNNERS_ENABLED=true
+      #- N8N_ENCRYPTION_KEY=SDi9RWzDZlQB3Gd+NnE5F0LL4ikmLpvV
+      # *** Auth ***
+      #- N8N_BASIC_AUTH=true
+      #- N8N_BASIC_AUTH_USERNAME=test1
+      #- N8N_BASIC_AUTH_PASSWORD=test1
+      # *** Logging ***
+      #- N8N_LOG_LEVEL=debug
+      #- N8N_LOG_OUTPUT=console,file
+      #- N8N_LOG_FILE_LOCATION=/home/node/.n8n/logs/n8n.log
+      #- N8N_LOG_FILE_MAXSIZE=50
+      #- N8N_LOG_FILE_MAXCOUNT=60
     ports:
       - 5678:5678
     volumes:
       # *** General configuration ***
       - /var/run/docker.sock:/var/run/docker.sock:ro # Access to Docker on host machine
       # *** Volume configuration ***
-      - ./example01-n8n-data:/home/node/.n8n
+      - ./example01-n8n-data/n8n:/home/node/.n8n
+      - ./example01-n8n-data/other:/home/node/
 
 volumes:
   example01-n8n-data:
@@ -109,7 +122,7 @@ Verificar mediante el acceso a la aplicación mediante la URL : http://localhost
 
 ### Makefile de gestión del proyecto
 
-Se puede instalar y ejecutar desde la herramienta montada
+Se puede instalar y ejecutar desde la herramienta gestora de Makefile desde el repositorio
 
 
 Pasos a seguir
