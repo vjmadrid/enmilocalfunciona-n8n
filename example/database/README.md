@@ -41,7 +41,133 @@ Define que elementos son necesarios para instalar el software
 
 ## Instalación
 
-### Docker Compose
+### Docker Compose : DB-docker-compose-prepare-db.yml
+
+Configuración del fichero "DB-docker-compose-prepare-db.yml"
+
+```bash
+# Use Case: Prepare PostgreSQL
+services:
+
+  # Project URL: https://github.com/postgres/postgres
+  # Docs URL: https://www.postgresql.org/docs/16/index.html
+  postgres:
+    image: postgres:16
+    container_name: "postgres"
+    restart: always
+    networks: ['demo']
+    environment:
+      # *** Settings ***
+      - POSTGRES_USER=${DB_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${DB_POSTGRES_PASSWORD}
+      - POSTGRES_DB=${DB_POSTGRES_DB}
+      - POSTGRES_NON_ROOT_USER=${DB_POSTGRES_NON_ROOT_USER}
+      - POSTGRES_NON_ROOT_PASSWORD=${DB_POSTGRES_NON_ROOT_PASSWORD}
+    ports:
+      - 5432:5432
+    volumes:
+      # *** Database Initializer ***
+      - ./init-data.sh:/docker-entrypoint-initdb.d/init-data.sh
+      # *** Volume configuration ***
+      - ./db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -h localhost -U ${DB_POSTGRES_NON_ROOT_USER} -d ${DB_POSTGRES_DB}']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+
+  # Project URL: https://github.com/pgadmin-org/pgadmin4
+  # Docs URL: https://www.pgadmin.org/docs/pgadmin4/8.14/index.html
+  pgadmin:
+    image: dpage/pgadmin4:9.0.0
+    #image: dpage/pgadmin4:8.14.0
+    container_name: "pgadmin"
+    restart: always
+    networks: ['demo']
+    environment:
+      # *** Settings ***
+      - PGADMIN_LISTEN_PORT=80
+      # *** Users ***
+      - PGADMIN_DEFAULT_EMAIL=admin@acme.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    depends_on:
+      - postgres
+    ports:
+      - 5050:80
+    volumes:
+      # *** Volume configuration ***
+      - ./pgadmin-data:/var/lib/pgadmin
+
+volumes:
+  db-data:
+  pgadmin-data:
+
+networks:
+  demo:
+    name: demo
+    driver: bridge
+```
+
+Pasos a seguir
+
+1. Localizar el directorio principal del proyecto : <PROJECT_PATH>
+
+2. Localiza la ruta : **/example/database/**
+
+3. Ejecutar el siguiente comando
+
+```bash
+docker-compose -f DB-docker-compose-prepare-db.yml up --build
+
+ó
+
+docker-compose -f DB-docker-compose-prepare-db.yml up --build -d
+```
+
+Tambien se puede ejecutar poniendo la ruta completa del fichero de Docker Compose
+
+4. Comprobar que las imagenes han sido creadas
+
+Verificar que aparecen como imágenes Docker: "postgres" y "pgadmin"
+
+Probar a conectar a la base de datos desde pgadmin
+
+
+#### Makefile de gestión del proyecto
+
+Se puede instalar y ejecutar desde la herramienta gestora de Makefile desde el repositorio
+
+
+Pasos a seguir
+
+1. Localizar el directorio principal del proyecto : <PROJECT_PATH>
+2. Cambiar al variable de entorno del fichero .env principal
+
+```bash
+### --- DOCKER ---
+...
+DOCKER_COMPOSE_FILE_USED=./example/DB-docker-compose-prepare-db.yml
+...
+```
+
+3. Ejecutar el siguiente comando
+
+```bash
+### --- DOCKER ---
+make up
+```
+
+4. Comprobar que las imagenes han sido creadas
+
+Verificar que aparecen como imágenes Docker: "postgres" y "pgadmin"
+
+Probar a conectar a la base de datos desde pgadmin
+
+
+
+
+### Docker Compose : DB-docker-compose-01.yml
 
 Configuración del fichero "DB-docker-compose-01.yml"
 
@@ -176,9 +302,9 @@ Verificar que parece como imagen Docker: "n8n", "postgres" y "pgadmin"
 Verificar mediante el acceso a la aplicación mediante la URL : http://localhost:5678
 
 
-### Makefile de gestión del proyecto
+#### Makefile de gestión del proyecto
 
-Se puede instalar y ejecutar desde la herramienta montada
+Se puede instalar y ejecutar desde la herramienta gestora de Makefile desde el repositorio
 
 
 Pasos a seguir
@@ -189,7 +315,7 @@ Pasos a seguir
 ```bash
 ### --- DOCKER ---
 ...
-DOCKER_COMPOSE_FILE_USED=./example/DB-docker-compose-01.yml.yml
+DOCKER_COMPOSE_FILE_USED=./example/DB-docker-compose-01.yml
 ...
 ```
 
@@ -208,6 +334,11 @@ Verificar que parece como imagen Docker el nombre "n8n"
 
 Verificar mediante el acceso a la aplicación mediante la URL : http://localhost:5678
 
+### Docker Compose : DB-docker-compose-02.yml
+
+Configuración del fichero "DB-docker-compose-02.yml"
+
+Todo igual que el 01 pero con la configuración de base de datos mediante fichero .env
 
 
 
