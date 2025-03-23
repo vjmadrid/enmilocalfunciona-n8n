@@ -24,7 +24,7 @@ docker exec -t $N8N_CONTAINER_NAME mkdir $N8N_CONTAINER_EXPORT_DIRECTORY
 
 # Export workflows and credentials from the container
 # IMPORTANT: The strategy of generating a single file for each resource including all resources shall be used
-echo "Starting export 'single-file' from the n8n container ..."
+echo "Starting export 'single-file' from the container ..."
 echo "* Workflows: ${N8N_CONTAINER_EXPORT_DIRECTORY}/workflows.json"
 echo "* Credentials: ${N8N_CONTAINER_EXPORT_DIRECTORY}/credentials.json"
 docker exec $N8N_CONTAINER_NAME n8n export:workflow --all --output=$N8N_CONTAINER_EXPORT_DIRECTORY/workflows.json

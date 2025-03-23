@@ -31,8 +31,8 @@ echo "* Credentials: ${N8N_CONTAINER_IMPORT_DIRECTORY}/credentials.json"
 docker exec $N8N_CONTAINER_NAME n8n import:workflow --input=$N8N_CONTAINER_IMPORT_DIRECTORY/workflows.json
 docker exec $N8N_CONTAINER_NAME n8n import:credentials --input=$N8N_CONTAINER_IMPORT_DIRECTORY/credentials.json
 
-# Clean up temporary files (optional)
-#echo "Cleaning up temporary files ..."
+# Clean up export files (optional)
+#echo "Cleaning up export files ..."
 #echo "* Workflows: ${SERVER_DIRECTORY}/workflows.json"
 #echo "* Credentials: ${SERVER_DIRECTORY}/credentials.json"
 #rm $SERVER_DIRECTORY/workflows.json $SERVER_DIRECTORY/credentials.json
