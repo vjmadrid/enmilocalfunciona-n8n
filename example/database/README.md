@@ -147,7 +147,7 @@ Pasos a seguir
 ```bash
 ### --- DOCKER ---
 ...
-DOCKER_COMPOSE_FILE_USED=./example/DB-docker-compose-prepare-db.yml
+DOCKER_COMPOSE_FILE_USED=./example/database/DB-docker-compose-prepare-db.yml
 ...
 ```
 
@@ -315,7 +315,7 @@ Pasos a seguir
 ```bash
 ### --- DOCKER ---
 ...
-DOCKER_COMPOSE_FILE_USED=./example/DB-docker-compose-01.yml
+DOCKER_COMPOSE_FILE_USED=./example/database/DB-docker-compose-01.yml
 ...
 ```
 
