@@ -1,9 +1,9 @@
 
-# n8n basic
+# n8n + import
 
 Este proyecto representa una estructura de recursos utilizados para el uso de **n8n** con **Docker** en el artículo:
 
-* [Acelerando los desarrollos con contenedores : n8n](https://www.enmilocalfunciona.io/acelerando-los-desarrollos-con-contenedores-n8n/): Artículo de soporte que ayudará a desplegar la herramienta en local mediante Docker y que servirá de base para la realización de los siguientes artículos
+* [Acelerando los desarrollos con contenedores : n8n + importación](https://www.enmilocalfunciona.io/acelerando-los-desarrollos-con-contenedores-n8n-importacion/): Artículo de soporte que ayudará a desplegar la herramienta n8n en local mediante Docker con importación de workflows y/o credenciales con diferentes automatismos.
 
 
 
@@ -40,12 +40,12 @@ Define que elementos son necesarios para instalar el software
 
 ## Instalación
 
-### Docker Compose : EXAMPLE-docker-compose-01.yml
+### Docker Compose : IMPORT-docker-compose-01.yml
 
-Configuración del fichero "EXAMPLE-docker-compose-01.yml"
+Configuración del fichero "IMPORT-docker-compose-01.yml"
 
 ```bash
-# Use Case: Basic Installation
+# Use Case: Basic Importation
 services:
   # Project URL: https://github.com/n8n-io/n8n
   # Docs URL: https://docs.n8n.io/
@@ -64,17 +64,11 @@ services:
       - N8N_SECURE_COOKIE=false
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
       - N8N_RUNNERS_ENABLED=true
-      #- N8N_ENCRYPTION_KEY=SDi9RWzDZlQB3Gd+NnE5F0LL4ikmLpvV
+      - N8N_ENCRYPTION_KEY=SDi9RWzDZlQB3Gd+NnE5F0LL4ikmLpvV
       # *** Auth ***
       #- N8N_BASIC_AUTH=true
       #- N8N_BASIC_AUTH_USERNAME=test1
       #- N8N_BASIC_AUTH_PASSWORD=test1
-      # *** Logging ***
-      #- N8N_LOG_LEVEL=debug
-      #- N8N_LOG_OUTPUT=console,file
-      #- N8N_LOG_FILE_LOCATION=/home/node/.n8n/logs/n8n.log
-      #- N8N_LOG_FILE_MAXSIZE=50
-      #- N8N_LOG_FILE_MAXCOUNT=60
     ports:
       - 5678:5678
     volumes:
@@ -97,16 +91,16 @@ Pasos a seguir
 
 1. Localizar el directorio principal del proyecto : <PROJECT_PATH>
 
-2. Localiza la ruta : **/example/basic/**
+2. Localiza la ruta : **/example/import/**
 
 3. Ejecutar el siguiente comando
 
 ```bash
-docker-compose -f EXAMPLE-docker-compose-01.yml up --build
+docker-compose -f IMPORT-docker-compose-01.yml up --build
 
 ó
 
-docker-compose -f EXAMPLE-docker-compose-01.yml up --build -d
+docker-compose -f IMPORT-docker-compose-01.yml up --build -d
 ```
 
 Tambien se puede ejecutar poniendo la ruta completa del fichero de Docker Compose
@@ -120,7 +114,7 @@ Verificar que parece como imagen Docker el nombre "n8n"
 Verificar mediante el acceso a la aplicación mediante la URL : http://localhost:5678
 
 
-#### Makefile de gestión del proyecto
+### Makefile de gestión del proyecto
 
 Se puede instalar y ejecutar desde la herramienta gestora de Makefile desde el repositorio
 
@@ -133,7 +127,7 @@ Pasos a seguir
 ```bash
 ### --- DOCKER ---
 ...
-DOCKER_COMPOSE_FILE_USED=./example/basic/EXAMPLE-docker-compose-01.yml
+DOCKER_COMPOSE_FILE_USED=./example/import/IMPORT-docker-compose-01.yml
 ...
 ```
 
@@ -151,10 +145,6 @@ Verificar que parece como imagen Docker el nombre "n8n"
 5. Comprobar que la aplicación ha sido desplegada correctamente
 
 Verificar mediante el acceso a la aplicación mediante la URL : http://localhost:5678
-
-### Docker Compose : EXAMPLE-docker-compose-02.yml
-
-Se trata de una configuración igual al ejemplo EXAMPLE-docker-compose-01.yml pero utilizando un fichero de variables de entorno .env
 
 
 
