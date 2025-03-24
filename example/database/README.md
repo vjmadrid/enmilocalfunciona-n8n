@@ -127,9 +127,9 @@ docker-compose -f DB-docker-compose-prepare-db.yml up --build -d
 
 Tambien se puede ejecutar poniendo la ruta completa del fichero de Docker Compose
 
-4. Comprobar que las imagenes han sido creadas
+4. Comprobar que las imágenes han sido creadas
 
-Verificar que aparecen como imágenes Docker: "postgres" y "pgadmin"
+
 
 Probar a conectar a la base de datos desde pgadmin
 
