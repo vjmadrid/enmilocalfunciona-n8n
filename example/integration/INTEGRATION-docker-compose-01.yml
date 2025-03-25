@@ -7,6 +7,7 @@ services:
     container_name: "n8n"
     #container_name: "${PROJECT_NAME}n8n"
     restart: always
+    networks: ['demo']
     environment:
       # *** General ***
       - GENERIC_TIMEZONE=Europe/Madrid
@@ -30,11 +31,14 @@ services:
       - ./integration01-n8n-data/n8n:/home/node/.n8n
       - ./integration01-n8n-data/other:/home/node/
 
+  # Project URL: https://github.com/mysql
+  # Docs URL: https://dev.mysql.com/doc/
   mysql:
     image: mysql:9.2.0
     container_name: "mysql"
     #container_name: "${PROJECT_NAME}mysql"
     restart: always
+    networks: ['demo']
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=pizzeriadb
@@ -51,17 +55,22 @@ services:
       - ./mysql-data/config:/etc/mysql/conf.d
       #- ./mysql-data/logs:/var/log/mysql
 
-  #api-shop:
-  #  build:
-  #    context: ./api-shop
-  #    dockerfile: Dockerfile
-  #  container_name: "api-shop"
-  #  #container_name: "${PROJECT_NAME}api-shop"
-  #  restart: always
-  #  networks: ['demo']
-  #  ports:
-  #    - 4000:80
+  delivery-api:
+    build:
+      context: ./delivery-api
+      dockerfile: Dockerfile
+    container_name: "delivery-api"
+    #container_name: "${PROJECT_NAME}delivery-api"
+    restart: always
+    networks: ['demo']
+    ports:
+      - 3000:80
 
 volumes:
   integration01-n8n-data:
   mysql-data:
+
+networks:
+  demo:
+    name: demo
+    driver: bridge
