@@ -1,4 +1,4 @@
-USE pizzadb;
+USE pizzeriadb;
 
 
 CREATE TABLE IF not exists pizzas (
@@ -32,14 +32,43 @@ CREATE TABLE IF not exists order_items (
     FOREIGN KEY (pizza_id) REFERENCES pizzas(id) ON DELETE CASCADE
 );
 
+-- -----------------------------------------
+-- Primera orden: 2 Margaritas y 1 Pepperoni
+-- -----------------------------------------
+
 -- Insertar un nuevo pedido
-INSERT INTO orders (total_price) VALUES (27.5);
+INSERT INTO orders (total_price) VALUES (26.0); -- (8.5 * 2) + (9.0 * 1) = 26.0
 
 -- Obtener el ID del último pedido insertado
-SET @last_order_id = LAST_INSERT_ID();
+SET @order1_id = LAST_INSERT_ID();
 
--- Insertar los ítems del pedido (ejemplo con 3 pizzas)
 INSERT INTO order_items (order_id, pizza_id, quantity) VALUES
-(@last_order_id, 1, 2),  -- 2 Margaritas
-(@last_order_id, 3, 1),  -- 1 Cuatro Quesos
-(@last_order_id, 5, 1);  -- 1 BBQ Chicken
+(@order1_id, 1, 2), -- 2 Margaritas 8.5
+(@order1_id, 2, 1); -- 1 Pepperoni 9.0
+
+-- -------------------------------------------
+-- Segunda orden: 1 Cuatro Quesos y 1 Hawaiana
+-- -------------------------------------------
+
+-- Insertar un nuevo pedido
+INSERT INTO orders (total_price) VALUES (19.5); -- (10.0 * 1) + (9.5 * 1) = 19.5
+
+-- Obtener el ID del último pedido insertado
+SET @order2_id = LAST_INSERT_ID();
+
+INSERT INTO order_items (order_id, pizza_id, quantity) VALUES
+(@order2_id, 3, 1), -- 1 Cuatro Quesos 10.0
+(@order2_id, 4, 2);  -- 1 Hawaiana 9.5
+
+-- ----------------------------
+-- Tercera orden: 1 Vegetariana
+-- ----------------------------
+
+-- Insertar un nuevo pedido
+INSERT INTO orders (total_price) VALUES (9.0); -- (9.0 * 1) = 9.0
+
+-- Obtener el ID del último pedido insertado
+SET @order3_id = LAST_INSERT_ID();
+
+INSERT INTO order_items (order_id, pizza_id, quantity) VALUES
+(@order3_id, 6, 1); -- 1 Vegetariana 9.0

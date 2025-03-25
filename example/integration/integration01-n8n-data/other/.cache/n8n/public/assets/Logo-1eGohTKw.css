@@ -1,0 +1,160 @@
+/* BEM support Func
+ -------------------------- */
+/* Transition
+-------------------------- */
+/* Color
+-------------------------- */
+/* Link
+-------------------------- */
+/* Border
+-------------------------- */
+/* Outline
+-------------------------- */
+/* Box shadow
+-------------------------- */
+/* Fill
+-------------------------- */
+/* Typography
+-------------------------- */
+/* z-index
+-------------------------- */
+/* Disable base
+-------------------------- */
+/* Icon
+-------------------------- */
+/* Checkbox
+-------------------------- */
+/* Radio
+-------------------------- */
+/* Select
+-------------------------- */
+/* Alert
+-------------------------- */
+/* MessageBox
+-------------------------- */
+/* Message
+-------------------------- */
+/* Notification
+-------------------------- */
+/* Input
+-------------------------- */
+/* Cascader
+-------------------------- */
+/* Group
+-------------------------- */
+/* Tab
+-------------------------- */
+/* Button
+-------------------------- */
+/* cascader
+-------------------------- */
+/* Switch
+-------------------------- */
+/* Dialog
+-------------------------- */
+/* Table
+-------------------------- */
+/* Pagination
+-------------------------- */
+/* Popup
+-------------------------- */
+/* Popover
+-------------------------- */
+/* Tooltip
+-------------------------- */
+/* Tag
+-------------------------- */
+/* Tree
+-------------------------- */
+/* Dropdown
+-------------------------- */
+/* Badge
+-------------------------- */
+/* Card
+--------------------------*/
+/* Slider
+--------------------------*/
+/* Steps
+--------------------------*/
+/* Menu
+--------------------------*/
+/* Rate
+--------------------------*/
+/* DatePicker
+--------------------------*/
+/* Loading
+--------------------------*/
+/* Scrollbar
+--------------------------*/
+/* Carousel
+--------------------------*/
+/* Collapse
+--------------------------*/
+/* Transfer
+--------------------------*/
+/* Header
+  --------------------------*/
+/* Footer
+--------------------------*/
+/* Main
+--------------------------*/
+/* Timeline
+--------------------------*/
+/* Backtop
+--------------------------*/
+/* Link
+--------------------------*/
+/* Calendar
+--------------------------*/
+/* Form
+-------------------------- */
+/* Avatar
+--------------------------*/
+/* Break-point
+--------------------------*/
+/* Break-points
+ -------------------------- */
+/* Scrollbar
+ -------------------------- */
+/* Placeholder
+ -------------------------- */
+/* BEM
+ -------------------------- */
+._logoContainer_1p61r_123 {
+  display: flex;
+  justify-content: center;
+}
+._logoText_1p61r_128 {
+  margin-left: var(--spacing-5xs);
+}
+._logoText_1p61r_128 path {
+  fill: var(--color-text-dark);
+}
+._releaseChannelTag_1p61r_135 {
+  color: var(--color-text-dark);
+  padding: var(--spacing-5xs) var(--spacing-4xs);
+  background-color: var(--color-background-base);
+  border: 1px solid var(--color-foreground-base);
+  border-radius: var(--border-radius-base);
+  font-size: var(--font-size-4xs);
+  font-weight: var(--font-weight-bold);
+  text-transform: capitalize;
+  line-height: var(--font-line-height-regular);
+  height: var(--spacing-s);
+  margin: 10px 0 0 3px;
+}
+._authView_1p61r_149 {
+  transform: scale(2);
+  margin-bottom: var(--spacing-xl);
+}
+._sidebar_1p61r_154 {
+  transform: scale(1.3);
+}
+._sidebarExpanded_1p61r_158 ._logo_1p61r_123 {
+  margin-left: var(--spacing-xs);
+}
+._sidebarCollapsed_1p61r_162 ._logo_1p61r_123 {
+  width: 40px;
+  height: 30px;
+  padding: 0 var(--spacing-4xs);
+}
