@@ -11,6 +11,8 @@
 **/queue01-n8n-data
 **/queue02-n8n-data
 **/other01-n8n-data
+**/integration01-n8n-data
+**/mcp01-n8n-data
 
 **/n8n-data
 **/postgres-data
