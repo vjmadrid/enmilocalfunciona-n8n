@@ -293,7 +293,7 @@ docker-compose -f DB-docker-compose-01.yml up --build -d
 
 Tambien se puede ejecutar poniendo la ruta completa del fichero de Docker Compose
 
-4. Comprobar que las imagenes ha sido creadas
+4. Comprobar que las imágenes ha sido creadas
 
 Verificar que parece como imagen Docker: "n8n", "postgres" y "pgadmin"
 
@@ -326,9 +326,9 @@ DOCKER_COMPOSE_FILE_USED=./example/database/DB-docker-compose-01.yml
 make up
 ```
 
-4. Comprobar que la imagen ha sido creada
+4. Comprobar que las imágenes ha sido creadas
 
-Verificar que parece como imagen Docker el nombre "n8n"
+Verificar que parece como imagen Docker: "n8n", "postgres" y "pgadmin"
 
 5. Comprobar que la aplicación ha sido desplegada correctamente
 
