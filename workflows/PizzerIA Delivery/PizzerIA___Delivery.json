@@ -1,0 +1,132 @@
+{
+  "name": "PizzerIA - Delivery",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "5eab7450-84c5-4c80-953c-03d9de5bbf26",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $json.timestamp }}",
+        "format": "=yyyy-MM-dd HH:mm:ss.SSS",
+        "outputFieldName": "fromDatetime",
+        "options": {
+          "includeInputFields": false,
+          "timezone": false
+        }
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "4655a5ef-d19f-4ac5-810e-eb1d0c6f80f8",
+      "name": "Date Formatter"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "=SELECT * FROM orders WHERE date between date_sub( '{{ $json[\"fromDatetime\"] }}' ,INTERVAL 5 MINUTE) and ' {{ $json[\"fromDatetime\"] }}';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.4,
+      "position": [
+        440,
+        0
+      ],
+      "id": "3cedc8a2-e183-4a26-a237-f6c73aeef4a1",
+      "name": "Orders Query",
+      "alwaysOutputData": true,
+      "credentials": {
+        "mySql": {
+          "id": "69QrFprJOOyUgik9",
+          "name": "MySQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://172.17.0.1:3000/check/order",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={\"id\": {{ $json.id }}} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        660,
+        0
+      ],
+      "id": "8c8bfe1a-0aaa-414d-acbf-607f15bfe384",
+      "name": "HTTP Request"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Date Formatter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date Formatter": {
+      "main": [
+        [
+          {
+            "node": "Orders Query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Orders Query": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "30624b6d-cdd4-4f5c-99a2-335a4414c034",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f5c0e8fa59049b78929ccc6159187bb540c3d152cac3ed11821d5f0257fa172c"
+  },
+  "id": "djKoqbJYAtFuGd81",
+  "tags": []
+}
